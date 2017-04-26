@@ -3,11 +3,11 @@ var listArray = [{
         name: "Books to Read",
         items: ["Hitchhiker's Guide to Galaxy", "Walden", "The Elephant, the Tiger, and the Cell Phone"]
     },
-    {
-        name: "Groceries to Buy",
-        items: ["Milk", "Eggs", "Butter"]
-    }
-];
+        {
+            name: "Groceries to Buy",
+            items: ["Milk", "Eggs", "Butter"]
+        }
+                ];
 var selectedList = 0;
 var listDiv = document.getElementById("lists");
 var itemDiv = document.getElementById("list-items");
@@ -18,68 +18,56 @@ var addItemButton = document.getElementById("add-item-button");
 // GET AND SET DATA FROM LOCAL STORAGE
 // ------------------------------------------------------
 
-
-// ------------------------------------------------------
-// LIST SELECTION
-// ------------------------------------------------------
-// 1. Listen to click
-// 2. Get the list that was clicked on
-// 3. Remove "active" from classList
-// 4. add "active" to selected list
-// 5. update items for selected div
-listDiv.addEventListener("click", function(e) {
-    // console.log(e.target);
-    var clickedListElement = e.target;
-    console.log(clickedListElement.dataset);
-    selectedList = clickedListElement.dataset.index;
-    console.log("selectedList", selectedList);
-
-    updateLists();
-    updateItemsForSelectedList(;
-});
-
 // ------------------------------------------------------
 // FUNCTIONS TO UPDATE THE HTML PAGE WITH RESPECT TO DATA
 // ------------------------------------------------------
 function updateLists() {
+    'use strict';
     while (listDiv.hasChildNodes()) {
         listDiv.removeChild(listDiv.lastChild);
     }
 
-    listArray.forEach(function(list, index) {
+    listArray.forEach(function (list, index) {
         // Create an 'a' element
-        var aElement = document.createElement("a");
+        var aElement = document.createElement("a"),
+            i = 0,
+            textNode = document.createTextNode(list.name);
+        
         aElement.classList.add("list-group-item");
         aElement.classList.add("list-group-item-action");
         aElement.classList.add("list");
-        if (selectedList == i) {
+        
+        if (selectedList === i) {
             aElement.classList.add("active");
         }
+        
         aElement.setAttribute("data-index", i);
-
-        var textNode = document.createTextNode(list.name);
+        
         aElement.appendChild(textNode);
 
         listDiv.appendChild(aElement);
-    );
+    });
 }
 
 function updateItemsForSelectedList() {
+    "use strict";
     while (itemDiv.hasChildNodes()) {
         itemDiv.removeChild(itemDiv.lastChild);
     }
 
     var listItemArray = listArray[selectedList].items;
-    listItemArray.forEach(function(item, i) {
+    listItemArray.forEach(function (item, i) {
         // Populate the list-items div (the right div) wit respective list items
         // - make a new 'a' element
-        var aElement = document.createElement("a");
+        var aElement = document.createElement("a"),
+            // - Create a textNode with item name
+            textNode = document.createTextNode(item);
         // - add classes to its classList
         aElement.classList.add("list-group-item");
         aElement.classList.add("list-group-item-action");
         // - set value of 'data-index' attribute to i
-        // - Create a textNode with item name
-        var textNode = document.createTextNode(item);
+        
+        
         // - append textNode to the 'a' element
         aElement.appendChild(textNode);
         // console.log(aElement);
@@ -94,16 +82,17 @@ updateItemsForSelectedList();
 // ------------------------------------------------------
 // ADDING TO LIST
 // ------------------------------------------------------
-addListButton.addEventListener("click", function(e) {
+addListButton.addEventListener("click", function (e) {
+    "use strict";
     e.preventDefault();
-    var listName = document["add-list-form"]["list-name-input"].value;
-    // if (listName.length >= 3) {
-        var newList = {
+    var listName = document["add-list-form"]["list-name-input"].value,
+        newList = {
             name: listName,
             items: []
         };
-        listArray.push(newList);
-        updateLists();
+    // if (listName.length >= 3) {
+    listArray.push(newList);
+    updateLists();
     // } else {
     //     alert("Please enter a valid list name: Atleast 3 characters");
     // }
@@ -112,13 +101,13 @@ addListButton.addEventListener("click", function(e) {
 // ------------------------------------------------------
 // ADDING TO LIST ITEMS
 // ------------------------------------------------------
-addItemButton.addEventListener("click", function(e) {
+addItemButton.addEventListener("click", function (e) {
+    "use strict";
     e.preventDefault();
-    var currentList = listArray[selectedList];
-    var itemArray = listArray[selectedList].items;
+    var currentList = listArray[selectedList],
+        itemArray = listArray[selectedList].items,
+        inputValue = document["add-item-form"]["item-name-input"].value;
 
-    // - get the input value in a variable
-    var inputValue = document["add-item-form"]["item-name-input"].value;
     // - check if the input value is more than 2 characters
     // - add it into itemArray
     itemArray.push(inputValue);
@@ -133,22 +122,47 @@ var buttonsArray = document.querySelectorAll(".popup-button");
 // querySelectorAll returns a DOMTokenList and not an Array (which includes methods like forEach)
 buttonsArray = Array.from(buttonsArray); // Conevrting DOMTokenList to an Array
 
-buttonArray.forEach(function(button) {
-    button.addEventListener("click", function() {
+buttonsArray.forEach(function (button) {
+    "use strict";
+    button.addEventListener("click", function () {
         var popup = document.getElementById(this.dataset.popupid);
         // The data attributes can be accessed by .dataset variable which is part of the DOMElement (check HTML for buttonsArray)
         popup.style.display = "flex";
     });
 });
 
-var closeButton = document.querySelectorAll(".close");
-closeButton.forEach(function(button, i) {
-    button.addEventListener("click", closePopups);
-});
-
 function closePopups() {
+    "use strict";
     var popupsArray = Array.from(document.querySelectorAll(".popup"));
-    popupsArray.forEach(function(popup) {
+    popupsArray.forEach(function (popup) {
         popup.style.display = "none";
     });
 }
+
+var closeButton = document.querySelectorAll(".close");
+closeButton.forEach(function (button, i) {
+    "use strict";
+    button.addEventListener("click", closePopups);
+});
+
+
+
+    // ------------------------------------------------------
+// LIST SELECTION
+// ------------------------------------------------------
+// 1. Listen to click
+// 2. Get the list that was clicked on
+// 3. Remove "active" from classList
+// 4. add "active" to selected list
+// 5. update items for selected div
+listDiv.addEventListener("click", function (e) {
+    // console.log(e.target);
+    'use strict';
+    var clickedListElement = e.target;
+    console.log(clickedListElement.dataset);
+    selectedList = clickedListElement.dataset.index;
+    console.log("selectedList", selectedList);
+
+    updateLists();
+    updateItemsForSelectedList();
+});
